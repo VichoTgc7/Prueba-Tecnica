@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Busqueda de pago</title>
+</head>
+<body>
+    <h1>Buscar estado del pago</h1>
+    <form action = "/find" method="POST">
+        <label for="order_id">Order ID:</label>
+        <input type="text" name="order_id">
+        <br>
+        <label for="status">Estado </label>
+        <input type="text" name="status">
+        <br>
+        <label for="date">Fecha: </label>
+        <input type="date" name="date">
+        <br>
+        <button type="submit">Buscar</button>
+    </form>
+
+    <% if (result){ %>
+        <h2>Resultados :</h2>
+        <pre><%= JSON.stringify(results, nnull, 2) %></pre>
+    <% } %>
+
+</body>
+</html>

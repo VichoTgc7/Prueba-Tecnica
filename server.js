@@ -42,3 +42,37 @@ app.post('/create-payment', async (req, res) =>{
         res.status(500).send('Error al crear el pago');
     }
 });
+
+//Ruta para buscar pagos
+
+app.post('/find', async (req, res) => {
+    const {order_id, status, date} = req.body;
+
+    try{
+        const response = await axios.post('${process.env.API_URL}/find',{
+            merchant_code: process.env.MERCHANT_CODE,
+            order_id,
+            status,
+            date,
+        },{
+            headers:{
+                'Authorization': `Bearer ${process.env.MERCHANT_API_TOKEN}`,
+              }
+        });
+
+        res.render('/find', { results: response.data});
+    } catch (error){
+        console.error('Error al buscar el estado del pago: ', error.response?.data || error.message);
+        res.status(500).send('Error al buscar el pago');
+    }
+})
+
+//Ruta de redirección 
+
+app.get('/redirect', (req, res) => {
+    const {status, payment_data}= req.query;
+
+    //Simulacion de datos para pruebas locales
+    const parsedData = payment_data ? JSON.parse(payment_data) : {id: 'test_id', amount:'1000'};
+    res.render('redirect', {status, payment_data: parsedData});
+})
