@@ -140,11 +140,11 @@ app.get("/find", (req, res) => {
                 <label for="merchant_order_id">Merchant Order ID (opcional):</label><br>
                 <input type="text" id="merchant_order_id" name="merchant_order_id"><br><br>
                 
-                <label for="order_amount">Monto (opcional):</label><br>
-                <input type="number" id="order_amount" name="order_amount"><br><br>
+                <label for="session_token">Session Token (opcional):</label><br>
+                <input type="text" id="session_token" name="session_token"><br><br>
                 
-                <label for="payment_status">Estado (opcional):</label><br>
-                <input type="text" id="payment_status" name="payment_status"><br><br>
+                <label for="payment_token">Payment_token (opcional):</label><br>
+                <input type="text" id="payment_token" name="payment_token"><br><br>
                 
                 <button type="submit">Buscar</button>
             </form>
@@ -161,22 +161,24 @@ app.get("/find", (req, res) => {
 });
 
 app.post("/find", async (req, res) => {
-    const { merchant_order_id, order_amount, payment_status } = req.body;
+    const { merchant_order_id, session_token, payment_token } = req.body;
 
     // Construir solo los parámetros proporcionados por el usuario
     const requestData = {
         merchant_code: MERCHANT_CODE,
+        session_token: session_token,
         merchant_api_token: MERCHANT_API_TOKEN,
+        payment_token: payment_token,
     };
 
     if (merchant_order_id) {
         requestData.merchant_order_id = merchant_order_id;
     }
-    if (order_amount) {
-        requestData.order_amount = Number(order_amount);
+    if (session_token) {
+        requestData.session_token = session_token;
     }
-    if (payment_status) {
-        requestData.payment_status = payment_status;
+    if (payment_token) {
+        requestData.payment_token = payment_token;
     }
 
     try {
