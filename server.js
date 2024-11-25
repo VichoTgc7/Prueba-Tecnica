@@ -6,7 +6,7 @@ const { exec } = require("child_process");
 const app = express();
 const PORT = 3000;
 
-// Configuraciones globales
+// Datos globales
 const API_URL = "https://api-sandbox.etpay.com";
 const PTM_URL = "https://pmt-sandbox.etpay.com";
 const INIT_API = "/session/initialize";
@@ -14,7 +14,7 @@ const CHECK_PAYMENT_API = "/merchant/check_payment_status";
 const MERCHANT_CODE = "cl_sandbox_pruebatecnica";
 const MERCHANT_API_TOKEN = "hdOhgochca7DyVEL4canpdaUX4SVGKMeXuGOcY1lhjSQSvL4zrHfweRszjbt7poN";
 
-// URLs de redirección
+// URL de redirección
 const PAYMENT_COMPLETED_URL = "http://localhost:3000/payment-completed";
 const PAYMENT_CANCELLATION_URL = "http://localhost:3000/payment-cancelled";
 const PAYMENT_WEBHOOK_URL = "http://localhost:3000/payment-webhook";
@@ -26,11 +26,11 @@ const openUrl = (url) => {
     exec(`${start} ${url}`);
 };
 
-// Configuración de middlewares
+// Configuración de middleware
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-// 1. Formulario principal (Captura de monto y merchant_order_id)
+//obtener informacion del pago
 app.get("/", (req, res) => {
     res.send(`
         <!DOCTYPE html>
@@ -63,7 +63,7 @@ app.get("/", (req, res) => {
     `);
 });
 
-// 2. Crear un pago y redirigir al funnel
+//Crear un pago y redirigir al funnel
 app.post("/create-payment", async (req, res) => {
     const { order_amount, merchant_order_id } = req.body;
 
@@ -98,7 +98,7 @@ app.post("/create-payment", async (req, res) => {
     }
 });
 
-// 3. Ruta para pagos completados
+//pagos completados
 app.get("/payment-completed", (req, res) => {
     res.send(`
         <h1>Pago Exitoso</h1>
@@ -106,7 +106,7 @@ app.get("/payment-completed", (req, res) => {
     `);
 });
 
-// 4. Ruta para pagos cancelados
+//pagos cancelados
 app.get("/payment-cancelled", (req, res) => {
     res.send(`
         <h1>Pago Cancelado</h1>
@@ -114,17 +114,16 @@ app.get("/payment-cancelled", (req, res) => {
     `);
 });
 
-// 5. Webhook para notificaciones de estados de pago
+//Webhook estados de pago
 app.post("/payment-webhook", (req, res) => {
     const paymentStatus = req.body;
 
     console.log("Notificación recibida:", paymentStatus);
 
-    // Confirmar recepción del webhook
     res.status(200).send("Webhook recibido.");
 });
 
-// 6. Ruta de búsqueda de pagos
+// busqueda de pagos
 app.get("/find", (req, res) => {
     res.send(`
         <!DOCTYPE html>
@@ -163,14 +162,13 @@ app.get("/find", (req, res) => {
 app.post("/find", async (req, res) => {
     const { merchant_order_id, session_token, payment_token } = req.body;
 
-    // Construir solo los parámetros proporcionados por el usuario
     const requestData = {
         merchant_code: MERCHANT_CODE,
         session_token: session_token,
         merchant_api_token: MERCHANT_API_TOKEN,
         payment_token: payment_token,
     };
-
+    //Buscar pagos con datos existentes
     if (merchant_order_id) {
         requestData.merchant_order_id = merchant_order_id;
     }
@@ -182,7 +180,7 @@ app.post("/find", async (req, res) => {
     }
 
     try {
-        // Realiza la solicitud a la API para buscar el estado del pago
+        //buscar el estado del pago
         const response = await axios.post(`${API_URL}${CHECK_PAYMENT_API}`, requestData);
 
         res.send(`
