@@ -28,9 +28,10 @@ Antes de ejecutar la aplicación, asegúrate de tener instalados los siguientes 
 ## Uso
 
 1. Inicia el servidor:
-
+    ´´
+    bash
     node server.js
-
+    ´´
 2. Accede a la aplicación en tu navegador visitando:  
    [http://localhost:3000](http://localhost:3000)
 
