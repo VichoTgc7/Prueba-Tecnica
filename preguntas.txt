@@ -30,7 +30,7 @@ Tomando de referencia el mundo de medios de pago online, en que casos, el
  ¿En qué situaciones un pago podría no tener payment token?
 
  Respuesta:
- En un pago cancelado(?)
+ En un pago cancelado
 
 
  ¿Cuál crees tú que es la diferencia entre payment token y sessión token? 
