@@ -1,0 +1,40 @@
+Explique por qué la URL para recibir el pago completado y cancelado puede ser la misma.
+
+Respuesta: 
+Pueden ser la misma, ya que, la api proporciona un dato (payment_status) que las aplicaciones pueden interpretar dependiendo
+de si el dato es por ejemplo: success o cancel. Toda esta informacion puede ser recibida en la misma url.      
+
+
+
+Tomando de referencia el mundo de medios de pago online, en que casos, el
+ payment_status del JWT de redirect puede llegar false y el payment_status del JWT del
+ webhook puede llegar success?
+
+ Respuesta:
+ en un entorno favorable y sin errores, no deberian existir estas diferencias, pero considerando que el redirect
+ ofrece información inmediata pero no muchas veces definitiva, y el webhook refleja la información definitiva y validada por
+ las entidades involucradas, pueden existir casos donde los retrasos en el procesamiento de los pagos provoquen que el redirect arroje false
+ pero que posteriormente se confirme y ahi el webhook entregaria un success.
+
+
+
+ Explica brevemente como podrías vulnerar el medio de pago si no tuvieras la validación de
+ los JWT implementado (validación de signature token), suma puntos 10 puntos si lo
+ puedes demostrar en la revisión. 
+
+ Respuesta:
+ ya que, no se verificaria la legitimidad del token, se podria alterar información dentro de el como
+ el payment_status, cambiandolo de false a succes, gracias a esto el medio confirmaria el pago generando perdidas.
+
+
+ ¿En qué situaciones un pago podría no tener payment token?
+
+ Respuesta:
+ En un pago cancelado(?)
+
+
+ ¿Cuál crees tú que es la diferencia entre payment token y sessión token? 
+
+ Respuesta:
+ la diferencia es que el session token se preocupa de mantener una sesion activa para el usuario y 
+ que el payment token se preocupa de mantener segura la información del pago como el numero de la tarjeta, claves, etc
