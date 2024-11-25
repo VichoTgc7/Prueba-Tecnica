@@ -18,10 +18,10 @@ Antes de ejecutar la aplicación, asegúrate de tener instalados los siguientes 
 ## Instalación
 
 1. Instala las dependencias necesarias:
-
+    ```bash
     npm install express axios body-parser
+    ```
     
-
 2. Configura los datos de la API en el archivo `server.js` si es necesario:
     - `API_URL`, `PTM_URL`, `MERCHANT_CODE`, y `MERCHANT_API_TOKEN`.
 
